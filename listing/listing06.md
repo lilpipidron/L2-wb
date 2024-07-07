@@ -21,7 +21,7 @@ func modifySlice(i []string) {
 Ответ: 3,2,3
 ```go
 type slice struct {
-	array *unsafe.Pointer
+	array unsafe.Pointer
 	len int
 	capacity int
 }
