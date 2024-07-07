@@ -26,14 +26,14 @@ func (strategy Strategy3) DoSomething() {
 	fmt.Println("strategy 3.DoSomething")
 }
 
-type Something struct {
+type SomethingWithStrategy struct {
 	strategy Strategy
 }
 
-func NewSomething(strategy Strategy) Something {
-	return Something{strategy: strategy}
+func NewSomethingWithStrategy(strategy Strategy) *SomethingWithStrategy {
+	return &SomethingWithStrategy{strategy: strategy}
 }
 
-func (smth Something) DoSmth() {
+func (smth *SomethingWithStrategy) DoSmth() {
 	smth.strategy.DoSomething()
 }
