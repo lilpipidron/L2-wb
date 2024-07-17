@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dev11/internal/handlers"
 	"dev11/internal/middleware"
 	"dev11/internal/storage/postgresql"
 	"fmt"
@@ -16,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	http.Handle("/create_event", middleware.LoggingMiddleware(nil))
+	http.Handle("/create_event", middleware.LoggingMiddleware(handlers.CreateEvent(storage)))
 	http.Handle("/update_event", middleware.LoggingMiddleware(nil))
 	http.Handle("/delete_event", middleware.LoggingMiddleware(nil))
 	http.Handle("/events_for_day", middleware.LoggingMiddleware(nil))
