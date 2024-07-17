@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dev11/internal/middleware"
 	"dev11/internal/storage/postgresql"
 	"fmt"
 	"log"
@@ -15,12 +16,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	http.Handle("/create_event", nil)
-	http.Handle("/update_event", nil)
-	http.Handle("/delete_event", nil)
-	http.Handle("/events_for_day", nil)
-	http.Handle("/events_for_week", nil)
-	http.Handle("/events_for_month", nil)
+	http.Handle("/create_event", middleware.LoggingMiddleware(nil))
+	http.Handle("/update_event", middleware.LoggingMiddleware(nil))
+	http.Handle("/delete_event", middleware.LoggingMiddleware(nil))
+	http.Handle("/events_for_day", middleware.LoggingMiddleware(nil))
+	http.Handle("/events_for_week", middleware.LoggingMiddleware(nil))
+	http.Handle("/events_for_month", middleware.LoggingMiddleware(nil))
 
 	log.Print("Starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
