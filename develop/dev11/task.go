@@ -20,9 +20,9 @@ func main() {
 	http.Handle("/create_event", middleware.LoggingMiddleware(handlers.CreateEvent(storage)))
 	http.Handle("/update_event", middleware.LoggingMiddleware(handlers.UpdateEvent(storage)))
 	http.Handle("/delete_event", middleware.LoggingMiddleware(handlers.DeleteEvent(storage)))
-	http.Handle("/events_for_day", middleware.LoggingMiddleware(nil))
-	http.Handle("/events_for_week", middleware.LoggingMiddleware(nil))
-	http.Handle("/events_for_month", middleware.LoggingMiddleware(nil))
+	http.Handle("/events_for_day", middleware.LoggingMiddleware(handlers.GetEventsForDay(storage)))
+	http.Handle("/events_for_week", middleware.LoggingMiddleware(handlers.GetEventsForWeek(storage)))
+	http.Handle("/events_for_month", middleware.LoggingMiddleware(handlers.GetEventsForMonth(storage)))
 
 	log.Print("Starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
