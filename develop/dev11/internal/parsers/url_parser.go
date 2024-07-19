@@ -18,5 +18,5 @@ func UrlParser(r *http.Request) (*models.Event, error) {
 		return nil, err
 	}
 
-	return &models.Event{ID: userID, Date: date}, nil
+	return &models.Event{UserID: userID, Date: date}, nil
 }

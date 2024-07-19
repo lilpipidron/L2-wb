@@ -22,5 +22,5 @@ func ParseBody(r *http.Request) (*models.Event, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &models.Event{ID: userID, Date: date}, nil
+	return &models.Event{UserID: userID, Date: date}, nil
 }

@@ -1,25 +1,26 @@
 package handlers
 
 import (
-	"dev11/internal/parsers"
+	"dev11/internal/models"
 	"dev11/internal/responses"
 	"dev11/internal/storage/postgresql"
 	"net/http"
+	"strconv"
 )
 
-func UpdateEvent(storage *postgresql.Storage) http.HandlerFunc {
+func DeleteEvent(storage *postgresql.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		event, err := parsers.ParseBody(r)
+		id, err := strconv.Atoi(r.URL.Query().Get("id"))
 		if err != nil {
 			responses.RespondJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 			return
 		}
 
-		if err = storage.DB.Save(&event).Error; err != nil {
+		if err = storage.DB.Delete(&models.Event{}, id).Error; err != nil {
 			responses.RespondJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			return
 		}
 
-		responses.RespondJSON(w, http.StatusOK, event)
+		responses.RespondJSON(w, http.StatusNoContent, map[string]string{"result": "success"})
 	}
 }

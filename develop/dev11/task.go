@@ -18,8 +18,8 @@ func main() {
 		log.Fatal(err)
 	}
 	http.Handle("/create_event", middleware.LoggingMiddleware(handlers.CreateEvent(storage)))
-	http.Handle("/update_event", middleware.LoggingMiddleware(nil))
-	http.Handle("/delete_event", middleware.LoggingMiddleware(nil))
+	http.Handle("/update_event", middleware.LoggingMiddleware(handlers.UpdateEvent(storage)))
+	http.Handle("/delete_event", middleware.LoggingMiddleware(handlers.DeleteEvent(storage)))
 	http.Handle("/events_for_day", middleware.LoggingMiddleware(nil))
 	http.Handle("/events_for_week", middleware.LoggingMiddleware(nil))
 	http.Handle("/events_for_month", middleware.LoggingMiddleware(nil))
