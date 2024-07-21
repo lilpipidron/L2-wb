@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 )
+// Пакеты ничем не отличаются от других решенией, парсим флаги, по ним понимаем
+// как выбирать строки, которые нам подходят и после отдаем нужное количество строк
 
 func match(line, pattern string, fixed, ignoreCase bool) bool {
 	if ignoreCase {
