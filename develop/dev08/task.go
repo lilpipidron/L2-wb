@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
+	"syscall"
 )
 
 var currDir string
@@ -56,6 +58,20 @@ func runCommand(command string) {
 		fmt.Println(pathToCurrDir)
 	case "echo":
 		fmt.Println(strings.Join(args, " "))
+	case "kill":
+		if len(args) != 1 {
+			fmt.Println("kill: invalid number of parameters")
+			return
+		}
+		pid, err := strconv.Atoi(args[0])
+		if err != nil {
+			fmt.Printf("kill: %v\n", err)
+			return
+		}
+		err = syscall.Kill(pid, syscall.SIGKILL)
+		if err != nil {
+			fmt.Printf("kill: %v\n", err)
+		}
 	}
 }
 
