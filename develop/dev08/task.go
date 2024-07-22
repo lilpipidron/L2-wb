@@ -54,6 +54,8 @@ func runCommand(command string) {
 			return
 		}
 		fmt.Println(pathToCurrDir)
+	case "echo":
+		fmt.Println(strings.Join(args, " "))
 	}
 }
 
