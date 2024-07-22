@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"syscall"
@@ -71,6 +72,22 @@ func runCommand(command string) {
 		err = syscall.Kill(pid, syscall.SIGKILL)
 		if err != nil {
 			fmt.Printf("kill: %v\n", err)
+		}
+	case "ps":
+		cmd := exec.Command("ps", "-e")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			fmt.Printf("ps: %v\n", err)
+		}
+	default:
+		externalCmd := exec.Command(cmd, args...)
+		externalCmd.Stdout = os.Stdout
+		externalCmd.Stderr = os.Stderr
+		err := externalCmd.Run()
+		if err != nil {
+			fmt.Printf("%s: %v\n", cmd, err)
 		}
 	}
 }
