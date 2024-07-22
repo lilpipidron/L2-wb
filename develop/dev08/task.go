@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -23,7 +24,46 @@ func changeCurrDir() {
 	currDir = dirs[len(dirs)-1]
 }
 
-func runPipeline(command string) {}
+func runPipeline(command string) {
+	commands := strings.Split(command, "|")
+	var cmds []*exec.Cmd
+
+	for _, cmdStr := range commands {
+		parts := strings.Fields(strings.TrimSpace(cmdStr))
+		cmd := exec.Command(parts[0], parts[1:]...)
+		cmds = append(cmds, cmd)
+	}
+
+	var outputBuf io.ReadCloser
+	for i, cmd := range cmds {
+		if i == 0 {
+			outputBuf, _ = cmd.StdoutPipe()
+		} else {
+			prevCmd := cmds[i-1]
+			prevCmd.Stdout = cmd.Stdin
+			outputBuf, _ = cmd.StdoutPipe()
+		}
+	}
+
+	for _, cmd := range cmds {
+		cmd.Stderr = os.Stderr
+		err := cmd.Start()
+		if err != nil {
+			fmt.Printf("%s: %v\n", cmd.Path, err)
+			return
+		}
+	}
+
+	for _, cmd := range cmds {
+		err := cmd.Wait()
+		if err != nil {
+			fmt.Printf("%s: %v\n", cmd.Path, err)
+			return
+		}
+	}
+
+	io.Copy(os.Stdout, outputBuf)
+}
 
 func runCommand(command string) {
 	parts := strings.Fields(command)
